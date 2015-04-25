@@ -57,12 +57,12 @@ INCLUDE_MARKER_OPERATORS = {
     False: ">"
 }
 
-MYSQL_CONFIG = "/etc/mysql/my.cnf"
-MYSQL_SERVICE_CANDIDATES = ["mysql", "mysqld", "mysql-server"]
-MYSQL_BIN_CANDIDATES = ["/usr/sbin/mysqld", "/usr/libexec/mysqld"]
-MYCNF_OVERRIDES = "/etc/mysql/conf.d/overrides.cnf"
+MYSQL_CONFIG = "/etc/my.cnf"
+MYSQL_SERVICE_CANDIDATES = ["mariadb", "mysql", "mysqld", "mysql-server"]
+MYSQL_BIN_CANDIDATES = ["/usr/bin/mysqld_safe"]
+MYCNF_OVERRIDES = "/etc/my.cnf.d/overrides.cnf"
 MYCNF_OVERRIDES_TMP = "/tmp/overrides.cnf.tmp"
-MYCNF_REPLMASTER = "/etc/mysql/conf.d/0replication.cnf"
+MYCNF_REPLMASTER = "/etc/my.cnf.d/0replication.cnf"
 MYCNF_REPLMASTER_TMP = "/tmp/replication.cnf.tmp"
 
 
@@ -637,7 +637,7 @@ class MySqlApp(object):
         """Clear old configs, which can be incompatible with new version."""
         LOG.debug("Clearing old MySQL config.")
         random_uuid = str(uuid.uuid4())
-        configs = ["/etc/my.cnf", "/etc/mysql/conf.d", "/etc/mysql/my.cnf"]
+        configs = ["/etc/my.cnf", "/etc/my.cnf.d"]
         for config in configs:
             command = "sudo mv %s %s_%s" % (config, config, random_uuid)
             try:
@@ -648,7 +648,7 @@ class MySqlApp(object):
                 pass
 
     def _create_mysql_confd_dir(self):
-        conf_dir = "/etc/mysql/conf.d"
+        conf_dir = "/etc/my.cnf.d"
         LOG.debug("Creating %s." % conf_dir)
         command = "sudo mkdir -p %s" % conf_dir
         utils.execute_with_timeout(command, shell=True)
