@@ -639,10 +639,9 @@ class MySqlApp(object):
         random_uuid = str(uuid.uuid4())
         configs = ["/etc/my.cnf", "/etc/mysql/conf.d", "/etc/mysql/my.cnf"]
         for config in configs:
-            command = "mv %s %s_%s" % (config, config, random_uuid)
+            command = "sudo mv %s %s_%s" % (config, config, random_uuid)
             try:
-                utils.execute_with_timeout(command, shell=True,
-                                           root_helper="sudo")
+                utils.execute_with_timeout(command, shell=True)
                 LOG.debug("%s saved to %s_%s." %
                           (config, config, random_uuid))
             except exception.ProcessExecutionError:
