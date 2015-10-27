@@ -19,7 +19,6 @@ import webob.exc
 
 from trove.backup.models import Backup as backup_model
 from trove.backup import views as backup_views
-import trove.common.apischema as apischema
 from trove.common import cfg
 from trove.common import exception
 from trove.common.i18n import _
@@ -31,6 +30,11 @@ from trove.datastore import models as datastore_models
 from trove.extensions.mysql.common import populate_users
 from trove.extensions.mysql.common import populate_validated_databases
 from trove.instance import models, views
+from trove.scheduled_task import models as scheduled_task_models
+from trove.scheduled_task import views as scheduled_task_views
+from trove.openstack.common import log as logging
+from trove.openstack.common.gettextutils import _
+import trove.common.apischema as apischema
 
 
 CONF = cfg.CONF
@@ -165,6 +169,23 @@ class InstanceController(wsgi.Controller):
         paged = pagination.SimplePaginatedDataView(req.url, 'backups', view,
                                                    marker)
         return wsgi.Result(paged.data(), 200)
+
+    def scheduled_tasks(self, req, tenant_id, id):
+        """Return all scheduled tasks for the specified instance."""
+        LOG.info(_("req : '%s'\n\n") % req)
+        LOG.info(_("Indexing scheduled tasks for instance '%s'") % id)
+
+        context = req.environ[wsgi.CONTEXT_KEY]
+        # verify ownership of the instance
+        models.load_instance_with_guest(models.DetailInstance,
+                                        context, id)
+
+        scheduled_tasks = scheduled_task_models.ScheduledTasks.load(
+            instance_id=id
+        )
+
+        view = scheduled_task_views.ScheduledTasksView(scheduled_tasks, req=req)
+        return wsgi.Result(view.data(), 200)
 
     def show(self, req, tenant_id, id):
         """Return a single instance."""

@@ -70,6 +70,10 @@ def map(engine, models):
     orm.mapper(models['datastore_configuration_parameters'],
                Table('datastore_configuration_parameters', meta,
                      autoload=True))
+    orm.mapper(models['scheduled_tasks'], Table('scheduled_tasks', meta,
+                                               autoload=True))
+    orm.mapper(models['scheduled_task_types'], Table('scheduled_task_types',
+                                                   meta, autoload=True))
 
 
 def mapping_exists(model):

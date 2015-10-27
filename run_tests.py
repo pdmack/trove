@@ -198,6 +198,7 @@ def import_tests():
     from trove.tests.api import configurations  # noqa
     from trove.tests.api import databases  # noqa
     from trove.tests.api import datastores  # noqa
+    from trove.tests.api import scheduled_tasks  # noqa
     from trove.tests.api import flavors  # noqa
     from trove.tests.api import header  # noqa
     from trove.tests.api import instances as rd_instances  # noqa
@@ -211,6 +212,7 @@ def import_tests():
     from trove.tests.api.mgmt import hosts  # noqa
     from trove.tests.api.mgmt import instances as mgmt_instances  # noqa
     from trove.tests.api.mgmt import instances_actions as mgmt_actions  # noqa
+    from trove.tests.api.mgmt import scheduled_task_types  # noqa
     from trove.tests.api.mgmt import malformed_json  # noqa
     from trove.tests.api.mgmt import storage  # noqa
     from trove.tests.api import replication  # noqa

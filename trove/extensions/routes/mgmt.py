@@ -24,6 +24,8 @@ from trove.extensions.mgmt.host.service import HostController
 from trove.extensions.mgmt.instances.service import MgmtInstanceController
 from trove.extensions.mgmt.quota.service import QuotaController
 from trove.extensions.mgmt.upgrade.service import UpgradeController
+from trove.extensions.mgmt.host.instance import service as hostservice
+from trove.extensions.mgmt.scheduled_task_type import service as typeservice
 from trove.extensions.mgmt.volume.service import StorageController
 
 LOG = logging.getLogger(__name__)
@@ -108,5 +110,14 @@ class Mgmt(extensions.ExtensionDescriptor):
             DatastoreVersionController(),
             member_actions={})
         resources.append(datastore_version)
+
+        scheduled_task_types = extensions.ResourceExtension(
+            '{tenant_id}/mgmt/scheduled_task_types',
+            typeservice.ScheduledTaskTypeController(),
+            deserializer=wsgi.RequestDeserializer(),
+            serializer=serializer,
+            member_actions={'enable': 'POST', 'disable': 'POST'},
+        )
+        resources.append(scheduled_task_types)
 
         return resources

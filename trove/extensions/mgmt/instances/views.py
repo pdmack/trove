@@ -166,3 +166,27 @@ class DiagnosticsView(object):
                 'vmHwm': self.diagnostics['vm_hwm'],
             }
         }
+
+class ScheduledTasksView(object):
+
+    def __init__(self, instance_id, scheduled_tasks):
+        self.instance_id = instance_id
+        self.scheduled_tasks = scheduled_tasks
+
+    def data(self):
+        return {
+            'scheduled_task': {
+                'id': self.scheduled_tasks['id'],
+                'tenant_id': self.scheduled_tasks['tenant_id'],
+                'instance_id': self.scheduled_tasks['instance_id'],
+                'type': self.scheduled_tasks['type'],
+                'enabled': self.scheduled_tasks['enabled'],
+                'name': self.scheduled_tasks['name'],
+                'frequency': self.scheduled_tasks['frequency'],
+                'window_start': self.scheduled_tasks['window_start'],
+                'window_end': self.scheduled_tasks['window_end'],
+                'alert_on_failure': self.scheduled_tasks['alert_on_failure'],
+                'alert_on_success': self.scheduled_tasks['alert_on_success'],
+                'description': self.scheduled_tasks['description'],
+            }
+    }
